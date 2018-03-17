@@ -1,0 +1,74 @@
+extends ../_template-admin
+
+block variables
+  - var title = 'Admin page'
+
+block content
+  script.
+    function getName (input) {
+      var span = document.getElementById('form-upload-span');
+      span.innerHTML = input.files[0].name;
+    };
+  .wrapper
+    header.admin-header
+      .container.admin-header__container
+        .admin-header__title Административная панель
+        a(href="/").admin-header__link Вернуться на сайт
+    section.admin-content
+      .container.admin-content__container
+        .form-container
+          form.form-skill(action='/admin/skills' method="POST")
+            .form-title Счетчики
+            if (msgskill && status === 'Error')
+              .status.error= msgskill
+            if (msgskill && status === 'Ok')
+              .status= msgskill
+            label.form-skill__input-line
+              span.form-skill__input-title Возраст
+              if ageField
+                input(name="age" type="number" value=`${ageField}`).form-skill__input
+              else
+                input(name="age" type="number").form-skill__input
+            label.form-skill__input-line
+              span.form-skill__input-title Концертов
+              if concertsField
+                input(name="concerts" type="number" value=`${concertsField}`).form-skill__input
+              else
+                input(name="concerts" type="number").form-skill__input
+            label.form-skill__input-line
+              span.form-skill__input-title Число городов
+              if citiesField
+                input(name="cities" type="number" value=`${citiesField}`).form-skill__input
+              else
+                input(name="cities" type="number").form-skill__input
+            label.form-skill__input-line
+              span.form-skill__input-title Лет на сцене
+              if yearsField
+                input(name="years" type="number" value=`${yearsField}`).form-skill__input
+              else
+                input(name="years" type="number").form-skill__input
+            .form__btns.form-skill__input-line
+              button(type="submit").button Сохранить
+          form.form-upload(action='/admin/upload' method="POST" enctype="multipart/form-data")
+            .form-title Добавить товар
+            if (msgfile && status === 'Error')
+              .status.error= msgfile
+            if (msgfile && status === 'Ok')
+              .status= msgfile
+            .form-upload__input-line
+              .form-upload__wraper
+                label.form-upload__label
+                  input(name="photo" type="file" required accept="image/*" onchange="getName(this)").form-upload__input-file
+                  span.form-upload__input-file-title#form-upload-span Загрузить фото
+            .form-upload__input-line
+              if productName
+                input(name="name" type="text" value=`${productName}`).form-upload__input
+              else
+                input(name="name" type="text" placeholder="Название").form-upload__input
+            .form-upload__input-line
+              if productPrice
+                input(name="price" type="text" value=`${productPrice}`).form-upload__input
+              else
+                input(name="price" type="text" placeholder="Цена").form-upload__input
+            .form-upload__input-line.form-upload__input-line--btn
+              button(type="submit").button Добавить

@@ -1,0 +1,32 @@
+if anchor
+  script.
+    window.onload = window.location.hash = '#{anchor}';
+section.form#form-email
+  .container
+    .form__subtitle.subtitle Контактные данные
+    h2.form__title.title Пишите, пообщаемся
+    if (msgemail && status === 'Error')
+      .status.error= msgemail
+    if (msgemail && status === 'Ok')
+      .status= msgemail
+    form(action="/" method="POST").form-email
+      .form-email__line
+        label.form-email__label(for="") Имя *
+        if fromName
+          input.form-email__input(type="text" name="name" value=`${fromName}`)
+        else
+          input.form-email__input(type="text" name="name")
+      .form-email__line
+        label.form-email__label(for="") Email *
+        if fromEmail
+          input.form-email__input(type="email" name="email" value=`${fromEmail}`)
+        else
+          input.form-email__input(type="email" name="email")
+      .form-email__line
+        label.form-email__label(for="") Сообщение
+        if messageContent
+          textarea(name="message").form-email__textarea #{messageContent}
+        else
+          textarea(name="message").form-email__textarea
+      .form-email__line
+        button(type="submit").form-email__button.button Отправить
