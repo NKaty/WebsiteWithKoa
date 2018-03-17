@@ -1,3 +1,6 @@
+if (process.env.TRACE) {
+  require('./libs/trace');
+}
 const path = require('path');
 const router = require('./routes');
 const config = require('./config');

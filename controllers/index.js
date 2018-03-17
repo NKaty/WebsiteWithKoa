@@ -35,12 +35,7 @@ exports.sendMessage = async ctx => {
     text: body.message.trim().slice(0, 500) + `\n Отправлено с: <${body.email}>`
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-  } catch (err) {
-    console.error(err);
-    ctx.throw(500, 'При отправке письма произошла ошибка!');
-  }
+  await transporter.sendMail(mailOptions);
 
   ctx.set('Content-Type', 'text/html');
   ctx.body = ctx.pug.render('pages/index',

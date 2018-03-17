@@ -1,5 +1,8 @@
-//const logger = require('koa-logger');
 const morgan = require('koa-morgan');
+const { stream } = require('../libs/winston')(module);
 
-//exports.init = app => app.use(logger());
-exports.init = app => app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'dev') {
+  exports.init = app => app.use(morgan('dev'));
+} else {
+  exports.init = app => app.use(morgan('combined', { stream: stream }));
+}

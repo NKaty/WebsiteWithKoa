@@ -6,13 +6,11 @@ exports.getLogin = async ctx => {
 };
 
 exports.signUp = async ctx => {
-  try {
-    await ctx.regenerateSession();
-  } catch (err) {
-    ctx.throw(500, 'При входе на сайт произошля ошибка');
-  }
+  await ctx.regenerateSession();
+
   const username = ctx.request.body.email;
   const password = ctx.request.body.password;
+
   const user = await ctx.db.get('users')
     .find({name: username})
     .value();
@@ -23,9 +21,9 @@ exports.signUp = async ctx => {
       if (user.name === 'admin@admin') {
         ctx.session.isAdmin = true;
         // Можно сразу отправлять админа на страничку админки
-        // res.redirect('/admin');
-        ctx.body = ctx.pug.render('pages/login',
-          {msglogin: 'Вы успешно вошли на сайт!', status: 'Ok'});
+        ctx.redirect('/admin');
+        // ctx.body = ctx.pug.render('pages/login',
+        //   {msglogin: 'Вы успешно вошли на сайт!', status: 'Ok'});
       } else {
         ctx.body = ctx.pug.render('pages/login',
           {msglogin: 'Вы успешно вошли на сайт!', status: 'Ok'});
@@ -36,16 +34,10 @@ exports.signUp = async ctx => {
     }
   } else {
     const hashedPassword = passwordHash.generate(password);
-    try {
-      await ctx.db.get('users')
-        .push({name: username, password: hashedPassword})
-        .write();
-    } catch (err) {
-      console.error(err);
-      ctx.throw(500, 'При регистрации произошля ошибка');
-      // res.render('pages/login',
-      //   {msglogin: `При регистрации произошля ошибка. ${err}`, status: 'Error'});
-    }
+    await ctx.db.get('users')
+      .push({name: username, password: hashedPassword})
+      .write();
+
     ctx.set('Content-Type', 'text/html');
     ctx.body = ctx.pug.render('pages/login',
       {msglogin: 'Вы успешно зарегистрировались на сайте!', status: 'Ok'});
