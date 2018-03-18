@@ -1,5 +1,7 @@
 const winston = require('winston');
 const path = require('path');
+const fs = require('fs');
+
 winston.emitErrs = true;
 
 const getLogger = (module) => {
@@ -26,11 +28,16 @@ const getLogger = (module) => {
       ]
     });
   } else {
+    const logDir = path.join(process.cwd(), 'logs');
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir);
+    }
+
     info = new winston.Logger({
       level: 'info',
       transports: [
         new (winston.transports.File)({
-          filename: `${path.join(process.cwd(), 'logs', 'log-info.log')}`,
+          filename: `${path.join(logDir, 'log-info.log')}`,
           label: modulePath
         })
       ]
@@ -40,7 +47,7 @@ const getLogger = (module) => {
       level: 'error',
       transports: [
         new (winston.transports.File)({
-          filename: `${path.join(process.cwd(), 'logs', 'log-error.log')}`,
+          filename: `${path.join(logDir, 'log-error.log')}`,
           label: modulePath
         })
       ]
@@ -54,8 +61,8 @@ const getLogger = (module) => {
   };
 
   return {
-    logInfo: info,
-    logError: error,
+    logInfo: info.info,
+    logError: error.error,
     stream: stream
   };
 };

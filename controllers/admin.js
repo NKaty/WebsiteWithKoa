@@ -30,7 +30,7 @@ exports.updateSkills = async ctx => {
       age < 0 || concerts < 0 || cities < 0 || years < 0);
   };
 
-  if (isFormNotValid) {
+  if (isFormNotValid()) {
     ctx.body = ctx.pug.render('pages/admin',
       { msgskill: 'Все поля должны быть заполнены и неотрицательны!',
         status: 'Error',
@@ -43,8 +43,8 @@ exports.updateSkills = async ctx => {
 
   const numbers = [age, concerts, cities, years];
   const skills = await ctx.db.get('skills');
-  await numbers.forEach((item, index) => {
-    skills.find({ id: index })
+  numbers.forEach(async (item, index) => {
+    await skills.find({ id: index })
       .assign({ number: item })
       .write();
   });

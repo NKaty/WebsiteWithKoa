@@ -8,23 +8,22 @@ exports.init = app => app.use(async (ctx, next) => {
   } catch (e) {
     if (e.status) {
       ctx.status = e.status;
-      logInfo.info(e.message);
+      logInfo(e.status, e.message);
       ctx.body = ctx.pug.render('pages/error', { message: e.message, status: ctx.status });
     } else {
       if (e.message.slice(0, 20) === 'maxFileSize exceeded') {
         ctx.status = 413;
-        logInfo.info(e.message);
+        logInfo(e.status, e.message);
         ctx.body = ctx.pug.render('pages/error', { message: 'Превышен максимальный размер файла (2 мегабайта)', status: ctx.status });
-        return;
-      }
-      if (process.env.DEV) {
-        ctx.status = 500;
-        logError.error(e.message, e.stack);
-        ctx.body = ctx.pug.render('pages/error', {message: e.message, status: ctx.status, stack: e.stack});
       } else {
-        ctx.status = 500;
-        logError.error(e.message, e.stack);
-        ctx.body = ctx.pug.render('pages/error', {message: 'Server error', status: ctx.status});
+        if (process.env.DEV) {
+          ctx.status = 500;
+          ctx.body = ctx.pug.render('pages/error', {message: e.message, status: ctx.status, stack: e.stack});
+        } else {
+          ctx.status = 500;
+          ctx.body = ctx.pug.render('pages/error', {message: 'Server error', status: ctx.status});
+        }
+        logError(e.message, e.stack);
       }
     }
   }
