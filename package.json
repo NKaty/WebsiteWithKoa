@@ -7,13 +7,10 @@
   },
   "dependencies": {
     "clarify": "^2.1.0",
-    "co-views": "^2.1.0",
     "koa": "^2.5.0",
     "koa-body": "^2.5.0",
-    "koa-compress": "^2.0.0",
     "koa-favicon": "^2.0.0",
     "koa-generic-session": "^2.0.1",
-    "koa-logger": "^3.2.0",
     "koa-morgan": "^1.0.1",
     "koa-pug": "^3.0.0-2",
     "koa-router": "^7.4.0",
@@ -23,7 +20,6 @@
     "nodemailer": "^4.4.1",
     "password-hash": "^1.2.2",
     "pug": "^2.0.1",
-    "swig": "^1.3.2",
     "trace": "^3.1.0",
     "winston": "^2.4.1"
   },
