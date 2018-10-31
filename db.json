@@ -7,6 +7,10 @@
     {
       "name": "tom@gmail.com",
       "password": "sha1$5ebb2bc9$1$d1e317fb4711f7b05a99779f0087ab832eda7dc9"
+    },
+    {
+      "name": "1111@mail.com",
+      "password": "sha1$c6284afe$1$016f08508cd5392e061c98c125eda19f196ee14e"
     }
   ],
   "products": [

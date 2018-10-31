@@ -4,7 +4,6 @@ const config = require('../config');
 const util = require('util');
 
 exports.isAdmin = async (ctx, next) => {
-  console.log(ctx.cookies.get('key'));
   if (ctx.session.isAdmin) {
     await next();
     return;

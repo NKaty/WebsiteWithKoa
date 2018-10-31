@@ -20,6 +20,7 @@ exports.signUp = async ctx => {
     if (passwordHash.verify(password, user.password)) {
       if (user.name === 'admin@admin') {
         ctx.session.isAdmin = true;
+
         // Можно сразу отправлять админа на страничку админки
         ctx.redirect('/admin');
         // ctx.body = ctx.pug.render('pages/login',
@@ -28,6 +29,8 @@ exports.signUp = async ctx => {
         ctx.body = ctx.pug.render('pages/login',
           {msglogin: 'Вы успешно вошли на сайт!', status: 'Ok'});
       }
+
+      ctx.sessionSave = true;
     } else {
       ctx.body = ctx.pug.render('pages/login',
         {msglogin: 'Вы ввели неправильное имя пользователя или пароль!', status: 'Error'});

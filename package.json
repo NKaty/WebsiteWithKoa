@@ -1,6 +1,7 @@
 {
-  "name": "Koa",
+  "name": "simple-site-koa",
   "version": "1.0.0",
+  "description": "Simple site with Koa",
   "private": true,
   "scripts": {
     "start": "node app.js"
